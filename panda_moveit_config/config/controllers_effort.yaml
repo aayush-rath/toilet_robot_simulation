@@ -1,0 +1,130 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 1000
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    joint_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    gripper_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    diff_cont:
+      type: diff_drive_controller/DiffDriveController
+
+joint_trajectory_controller:
+  ros__parameters:
+    joints:
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+    command_interfaces:
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+    gains:
+      panda_joint1:
+        p: 4000.0
+        d: 10.0
+        i: 250.0
+        i_clamp: 15.0
+      panda_joint2:
+        p: 10000.0
+        d: 25.0
+        i: 600.0
+        i_clamp: 45.0
+      panda_joint3:
+        p: 8000.0
+        d: 20.0
+        i: 450.0
+        i_clamp: 30.0
+      panda_joint4:
+        p: 6000.0
+        d: 15.0
+        i: 300.0
+        i_clamp: 30.0
+      panda_joint5:
+        p: 3000.0
+        d: 5.0
+        i: 175.0
+        i_clamp: 7.0
+      panda_joint6:
+        p: 2500.0
+        d: 3.0
+        i: 150.0
+        i_clamp: 6.0
+      panda_joint7:
+        p: 2000.0
+        d: 2.0
+        i: 10.0
+        i_clamp: 5.0
+
+gripper_trajectory_controller:
+  ros__parameters:
+    joints:
+      - panda_finger_joint1
+      - panda_finger_joint2
+    command_interfaces:
+      - effort
+    state_interfaces:
+      - position
+      - velocity
+    gains:
+      panda_finger_joint1:
+        p: 225.0
+        d: 0.001
+        i: 0.4
+        i_clamp: 4.0
+      panda_finger_joint2:
+        p: 225.0
+        d: 0.001
+        i: 0.4
+        i_clamp: 4.0
+
+diff_cont:
+  ros__parameters:
+    left_wheel_names  : ['left_wheel_joint']
+    right_wheel_names : ['right_wheel_joint']
+
+    command_interfaces: ["velocity"]
+    state_interfaces: ["position", "velocity"]
+
+    publish_rate: 41.2
+
+    pose_covariance_diagonal : [0.00001, 0.00001, 1000000.0, 1000000.0, 1000000.0, 1000.0]
+    twist_covariance_diagonal: [0.1, 0.1, 1000000.0, 1000000.0, 1000000.0, 1000.0]
+    enable_odom_tf: false
+
+    wheel_separation : 0.445208
+    wheel_radius : 0.0625
+
+    wheel_separation_multiplier: 1.0
+    wheel_radius_multiplier    : 1.0
+
+    cmd_vel_timeout: 0.5
+    use_stamped_vel: false
+
+    enable_odom_tf: true
+
+    base_frame_id: base_footprint
+    odom_frame_id: odom
+
+    linear:
+      x:
+        has_velocity_limits    : true
+        max_velocity           : 1.0 
+        has_acceleration_limits: true
+        max_acceleration       : 2.0
+    angular:
+      z:
+        has_velocity_limits    : true
+        max_velocity           : 1.5
+        has_acceleration_limits: true
+        max_acceleration       : 2.5

@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <ros2_control name="GazeboSimSystem" type="system">
+        <hardware>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+        </hardware>
+
+        <joint name="left_wheel_joint">
+            <command_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity"/>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+
+    <xacro:macro name="set_wheel_friction" params="link friction">
+        <gazebo reference="${link}">
+            <mu1 value="${friction}"/>
+            <mu2 value="${friction}"/>
+            <kp value="10000000.0"/>
+            <kd value="1.0"/>
+            <minDepth>0.01</minDepth>
+        </gazebo>
+    </xacro:macro>
+
+    <xacro:set_wheel_friction link="left_wheel_link" friction="200"/>
+    <xacro:set_wheel_friction link="right_wheel_link" friction="200"/>
+    <xacro:set_wheel_friction link="fl_caster_wheel_link" friction="1"/>
+    <xacro:set_wheel_friction link="fr_caster_wheel_link" friction="1"/>
+    <xacro:set_wheel_friction link="bl_caster_wheel_link" friction="1"/>
+    <xacro:set_wheel_friction link="br_caster_wheel_link" friction="1"/>
+
+    <gazebo>
+      <plugin filename="libignition-gazebo-pose-publisher-system.so" name="ignition::gazebo::systems::PosePublisher">
+        <publish_link_pose>true</publish_link_pose>
+        <publish_collision_pose>false</publish_collision_pose>
+        <publish_visual_pose>false</publish_visual_pose>
+        <use_pose_vector_msg>true</use_pose_vector_msg>
+        <static_publisher>false</static_publisher>
+        <static_update_frequency>1</static_update_frequency>
+      </plugin>
+    </gazebo>
+</robot>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="mir_wheel_transmission" params="locationprefix">
+        <transmission name="${locationprefix}_wheel_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${locationprefix}_wheel_joint">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${locationprefix}_wheel_motor">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+    </xacro:macro>
+
+    <xacro:mir_wheel_transmission locationprefix="left"/>
+    <xacro:mir_wheel_transmission locationprefix="right"/>
+</robot>
