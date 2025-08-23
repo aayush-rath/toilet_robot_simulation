@@ -270,6 +270,7 @@ def generate_launch_description():
                 trajectory_execution,
                 planning_scene_monitor_parameters,
                 moveit_controller_manager,
+                {"publish_robot_description_semantic": True},
                 {"use_sim_time": use_sim_time},
             ],
         ),

@@ -97,7 +97,7 @@ def generate_launch_description() -> LaunchDescription:
                             )
                         ),
                         launch_arguments=[
-                            ("gz_args", [world, " -r -v ", gz_verbosity]) #"/home/aayush/Internship/rand/nolon_armcontrol-toilet_scene/toilet_world.world"
+                            ("gz_args", ["/home/aayush/Internship/rand/nolon_armcontrol-toilet_scene/toilet_world.world", " -r -v ", gz_verbosity]) #"/home/aayush/Internship/rand/nolon_armcontrol-toilet_scene/toilet_world.world"
                         ],
                     ),
                     # Launch move_group of MoveIt 2
