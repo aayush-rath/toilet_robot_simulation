@@ -38,16 +38,6 @@
 
   <end_effector group="gripper" name="gripper" parent_group="arm" parent_link="${prefix_arm}hand_tcp"/>
 
-  <passive_joint name="bl_caster_rotation_joint"/>
-  <passive_joint name="bl_caster_wheel_joint"/>
-  <passive_joint name="br_caster_rotation_joint"/>
-  <passive_joint name="br_caster_wheel_joint"/>
-  <passive_joint name="fl_caster_rotation_joint"/>
-  <passive_joint name="fl_caster_wheel_joint"/>
-  <passive_joint name="fr_caster_rotation_joint"/>
-  <passive_joint name="fr_caster_wheel_joint"/>
-
-
   <disable_collisions link1="${prefix_gripper}hand" link2="${prefix_arm}link3" reason="Never"/>
   <disable_collisions link1="${prefix_gripper}hand" link2="${prefix_arm}link4" reason="Never"/>
   <disable_collisions link1="${prefix_gripper}hand" link2="${prefix_arm}link6" reason="Never"/>
@@ -60,6 +50,5 @@
   <disable_collisions link1="${prefix_arm}link4" link2="${prefix_gripper}rightfinger" reason="Never"/>
   <disable_collisions link1="${prefix_arm}link6" link2="${prefix_gripper}rightfinger" reason="Never"/>
   <disable_collisions link1="${prefix_arm}link7" link2="${prefix_gripper}rightfinger" reason="Never"/>
-  
 
 </robot>

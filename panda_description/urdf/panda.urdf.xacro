@@ -9,6 +9,7 @@
   <xacro:include filename="$(find panda_description)/urdf/panda_gripper.xacro"/>
   <xacro:include filename="$(find panda_description)/urdf/panda_utils.xacro"/>
   <xacro:include filename="$(find panda_description)/urdf/panda.gazebo"/>
+  <xacro:include filename="$(find panda_description)/urdf/mir.urdf.xacro"/>
 
 
   <!--            -->
@@ -77,9 +78,9 @@
 
   <!-- Arm -->
   <xacro:panda_arm
-    base_parent="panda_mount_plate"
+    base_parent="${world_name}"
     prefix="${prefix_arm}"
-    origin_xyz="0 0 0.05"
+    origin_xyz="${origin_xyz}"
     origin_rpy="${origin_rpy}"
     collision="$(arg collision_arm)"
     safety_limits="$(arg safety_limits)"
@@ -114,53 +115,49 @@
     </xacro:if>
   </xacro:if>
 
-  <!-- Mounting parameters for Panda on MiR -->
-  <xacro:arg name="panda_mount_height" default="0.35"/>  <!-- Height above MiR base -->
-  <xacro:arg name="panda_mount_x" default="0.0"/>       <!-- X offset from MiR center -->
-  <xacro:arg name="panda_mount_y" default="0.0"/>       <!-- Y offset from MiR center -->
-
-  <xacro:include filename="$(find panda_description)/urdf/mir.urdf.xacro"/>
-
-  <!-- <link name="${world_name}"/> -->
-
-  <!-- MiR mobile base -->
   <xacro:mir/>
 
-  <!-- Fixed joint connecting world to MiR base -->
-  <joint name="world_to_mir_joint" type="fixed">
-    <parent link="${world_name}"/>
-    <child link="base_footprint"/>
-    <origin xyz="0 0 0.05" rpy="${origin_rpy}"/>
-  </joint>
-
-  <!-- Mounting plate link -->
-  <link name="panda_mount_plate">
+  <link name="box">
     <inertial>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <mass value="5.0"/>
-      <inertia ixx="0.1" ixy="0" ixz="0" iyy="0.1" iyz="0" izz="0.1"/>
+      <mass value="1.0"/> <!-- non-zero mass -->
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+              iyy="0.01" iyz="0.0"
+              izz="0.01"/>
     </inertial>
-    <visual>
+
+    <visual name="box_visual">
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.3 0.3 0.05"/>
+        <box size="0.5 0.5 0.4"/>
       </geometry>
-      <material name="mount_plate_color">
-        <color rgba="0.8 0.8 0.8 1.0"/>
+      <material name="Grey">
+        <color rgba="0.5 0.5 0.5 1.0"/>
       </material>
     </visual>
+
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <box size="0.3 0.3 0.05"/>
+        <box size="0.5 0.5 0.3"/>
       </geometry>
     </collision>
   </link>
 
-  <!-- Fixed joint mounting the plate to MiR base -->
-  <joint name="mir_to_mount_plate_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="panda_mount_plate"/>
-    <origin xyz="$(arg panda_mount_x) $(arg panda_mount_y) $(arg panda_mount_height)" rpy="0 0 0"/>
+  <gazebo reference="box">
+    <material>Gazebo/Grey</material>
+  </gazebo>
+
+  <joint name="base_joint_box" type="fixed">
+    <origin xyz="-0.1 0 -0.65" rpy="0 0 0"/>
+    <parent link="${world_name}"/>
+    <child link="mir_base"/>
   </joint>
+
+  <joint name="some_joint" type="fixed">
+    <origin xyz="-0.1 0.0 -0.2" rpy="0.0 0.0 0.0"/>
+    <parent link="${world_name}"/>
+    <child link="box"/>
+  </joint>
+
 </robot>

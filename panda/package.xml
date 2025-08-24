@@ -12,6 +12,22 @@
   <build_depend>panda_description</build_depend>
   <build_depend>panda_moveit_config</build_depend>
   <build_depend>xacro</build_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>moveit_py</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <depend>rclcpp</depend>
+  <depend>moveit_core</depend>
+  <depend>moveit_ros_planning_interface</depend>
+  <depend>geometric_shapes</depend>
+  <depend>moveit_task_constructor_core</depend>
+  <depend>moveit_visual_tools</depend>
+
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>joint_state_publisher_gui</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

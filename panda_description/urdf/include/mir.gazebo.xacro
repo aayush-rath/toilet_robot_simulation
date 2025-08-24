@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <ros2_control name="GazeboSimSystem" type="system">
+    <!-- <ros2_control name="GazeboSimSystem" type="system">
         <hardware>
             <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
@@ -16,7 +16,7 @@
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
-    </ros2_control>
+    </ros2_control> -->
 
     <xacro:macro name="set_wheel_friction" params="link friction">
         <gazebo reference="${link}">

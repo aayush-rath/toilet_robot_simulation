@@ -1,19 +1,17 @@
 #!/usr/bin/env -S ros2 launch
 """Example of planning with MoveIt2 and executing motions using ROS 2 controllers within Gazebo"""
-
-from os import path
 import os
+from os import path
 from typing import List
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
+    SetEnvironmentVariable,
     DeclareLaunchArgument,
     ExecuteProcess,
     IncludeLaunchDescription,
     RegisterEventHandler,
-    SetEnvironmentVariable,
-    OpaqueFunction
 )
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -25,10 +23,6 @@ from launch.substitutions import (
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
-def print_env_var(context):
-    import os
-    print("GZ_SIM_RESOURCE_PATH:", os.environ.get('GZ_SIM_RESOURCE_PATH'))
-    return []
 
 def generate_launch_description() -> LaunchDescription:
     # Declare all launch arguments
@@ -50,13 +44,11 @@ def generate_launch_description() -> LaunchDescription:
     use_sim_time = LaunchConfiguration("use_sim_time")
     gz_verbosity = LaunchConfiguration("gz_verbosity")
     log_level = LaunchConfiguration("log_level")
-    config_path = "/home/aayush/Internship/franka_ws/src/panda_moveit_config/config/controllers_effort.yaml"
     env_var = SetEnvironmentVariable(
         name='GZ_SIM_RESOURCE_PATH',
-        value= os.path.join("/home/aayush/Internship/rand/nolon_armcontrol-toilet_scene", 'models') + ':' +
+        value= os.path.join("/home/aayush/Internship/rand/nolon_armcontrol", 'models') + ':' +
             os.environ.get('GZ_SIM_RESOURCE_PATH', '')
     )
-    print_env = OpaqueFunction(function=print_env_var)
 
     # List of processes to be executed
     # xacro2sdf
@@ -97,7 +89,7 @@ def generate_launch_description() -> LaunchDescription:
                             )
                         ),
                         launch_arguments=[
-                            ("gz_args", ["/home/aayush/Internship/rand/nolon_armcontrol-toilet_scene/toilet_world.world", " -r -v ", gz_verbosity]) #"/home/aayush/Internship/rand/nolon_armcontrol-toilet_scene/toilet_world.world"
+                            ("gz_args", ["/home/aayush/Internship/rand/nolon_armcontrol/modified.sdf", " -r -v ", gz_verbosity])
                         ],
                     ),
                     # Launch move_group of MoveIt 2
@@ -152,6 +144,12 @@ def generate_launch_description() -> LaunchDescription:
                                     sdf_model_filepath,
                                 ]
                             ),
+                            "-x", "-0.75", #"-0.35",  # X position
+                            "-y", "0.3", #"1.2",  # Y position
+                            "-z", "0.7", #"0.7",  # Z position
+                            "-R", "0.0", #"0.0",  # Roll
+                            "-P", "0.0", #"0.0",  # Pitch
+                            "-Y", "3.1416",#"1.5708", # Yaw (example: 90 degrees)
                             "--ros-args",
                             "--log-level",
                             log_level,
@@ -171,19 +169,13 @@ def generate_launch_description() -> LaunchDescription:
                         ],
                         parameters=[{"use_sim_time": use_sim_time}],
                     ),
-                    Node(
-                        package='controller_manager',
-                        executable='spawner',
-                        arguments=['diff_cont', '--param-file', config_path],
-                        parameters=[{"use_sim_time": True}]
-                    )
                 ],
             )
         ),
     ]
 
     return LaunchDescription(
-        [env_var, print_env]+declared_arguments + processes + launch_descriptions + nodes
+        [env_var]+declared_arguments + processes + launch_descriptions + nodes
     )
 
 

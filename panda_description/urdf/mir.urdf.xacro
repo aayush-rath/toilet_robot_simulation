@@ -35,15 +35,7 @@
     <xacro:property name="laser_dx" value="0.392" />
     <xacro:property name="laser_dy" value="0.2358" />
 
-    <link name="base_footprint" />
-
-    <joint name="base_joint" type="fixed">
-      <parent link="base_footprint" />
-      <child link="base_link" />
-      <origin xyz="0 0 0" rpy="0 0 0" />
-    </joint>
-
-    <link name="base_link">
+    <link name="mir_base">
       <xacro:box_inertial mass="${mir_base_mass}" x="${mir_base_inertial_x_length}" y="${mir_base_inertial_y_length}" z="${mir_base_inertial_z_length}">
         <origin xyz="${mir_base_inertial_x + mir_act_wheel_dx} ${mir_base_inertial_y} ${mir_base_inertial_z}" rpy="0 0 0" />
       </xacro:box_inertial>
@@ -64,14 +56,14 @@
       </collision>
     </link>
 
-    <gazebo reference="base_link">
+    <gazebo reference="mir_base">
       <material>Gazebo/White</material>
     </gazebo>
 
     <xacro:macro name="actuated_wheel" params="locationprefix locationright">
       <joint name="${locationprefix}_wheel_joint" type="continuous">
           <origin xyz="0.0 ${-mir_act_wheel_dy * locationright} ${mir_act_wheel_radius}" rpy="0 0 0" />
-          <parent link="base_link" />
+          <parent link="mir_base" />
           <child link="${locationprefix}_wheel_link" />
           <axis xyz="0 1 0" />
           <limit effort="100" velocity="20.0" />
@@ -107,7 +99,7 @@
       <!-- Caster Hub -->
       <joint name="${locationprefix}_caster_rotation_joint" type="continuous">
           <origin xyz="${wheel_base_dx} ${-mir_caster_wheel_base_dy * locationright} ${mir_caster_wheel_base_dz}" rpy="0 0 0" />
-          <parent link="base_link" />
+          <parent link="mir_base" />
           <child link="${locationprefix}_caster_rotation_link" />
           <axis xyz="0 0 1" />
           <dynamics damping="0.01" friction="0.0"/>

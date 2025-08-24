@@ -144,6 +144,77 @@
     gazebo_preserve_fixed_joint="${gazebo_preserve_fixed_joint}"
     />
 
+    <!-- Main brush body -->
+    <link name="mirror_brush_body">
+      <inertial>
+        <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        <mass value="0.15"/>
+        <inertia ixx="0.0008" ixy="0" ixz="0" iyy="0.0015" iyz="0" izz="0.0008"/>
+      </inertial>
+
+      <!-- Ergonomic Handle (blue plastic) -->
+      <visual>
+        <origin xyz="0 0 0.075" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.015" length="0.07"/>
+        </geometry>
+        <material name="blue_handle">
+          <color rgba="0.1 0.3 0.7 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.075" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.015" length="0.07"/>
+        </geometry>
+      </collision>
+
+      <!-- Handle grip -->
+      <visual>
+        <origin xyz="0 0 0.05" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.017" length="0.03"/>
+        </geometry>
+        <material name="dark_rubber">
+          <color rgba="0.2 0.2 0.2 1"/>
+        </material>
+      </visual>
+
+      <!-- Brush head (rotated & enlarged) -->
+      <visual>
+        <origin xyz="0 0 0.0" rpy="1.5708 0 0"/>
+        <geometry>
+          <box size="0.09 0.055 0.015"/>
+        </geometry>
+        <material name="white_head">
+          <color rgba="0.95 0.95 0.95 1"/>
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.0" rpy="1.5708 0 0"/>
+        <geometry>
+          <box size="0.09 0.055 0.015"/>
+        </geometry>
+      </collision>
+
+      <!-- Simplified collision for bristles -->
+      <collision>
+        <origin xyz="0 0 -0.005" rpy="1.5708 0 0"/>
+        <geometry>
+          <box size="0.08 0.05 0.008"/>
+        </geometry>
+      </collision>
+
+    </link>
+
+    <!-- Joint to attach brush to robot end-effector -->
+    <joint name="brush_mount_joint" type="fixed">
+      <parent link="${prefix}${link_finger2_name}"/>
+      <child link="mirror_brush_body"/>
+      <origin xyz="0.0 0.05 0.12" rpy="0 3.1415 0"/>
+    </joint>
+
+
     <!-- ROS 2 control -->
     <xacro:if value="${ros2_control}">
       <xacro:ros2_control_panda_gripper prefix="${prefix}" plugin="${ros2_control_plugin}" command_interface="${ros2_control_command_interface}"/>
